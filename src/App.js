@@ -1,0 +1,48 @@
+
+
+import React, { useState } from "react";
+
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { ThemeProvider } from "styled-components";
+import { darkMode, lightMode } from "./components/Theme";
+import { GlobalStyles } from "./components/styles/Global";
+
+import Home from "./pages/Home/Home";
+import Search from "./pages/Search/Search";
+
+import ErrorPage from "./pages/Error/ErrorPage";
+
+import Main from "./pages/Search/Main";
+import Navbar from "./components/Navbar";
+import Footer from "./components/Footer";
+
+import { StyledWrapper } from "./components/styles/Wrapper.styled";
+
+function App() {
+  const [colorMode, setColorMode] = useState(true);
+
+  return (
+    <ThemeProvider theme={colorMode ? lightMode : darkMode}>
+      <GlobalStyles />
+      <Router>
+        <Navbar
+          colorMode={colorMode}
+          setColorMode={(obj) => setColorMode(obj)}
+        />
+        <StyledWrapper>
+          <Routes>
+            <Route exact path="/" element={<Home />} />
+            <Route exact path="/search" element={<Search />}>
+              <Route path=":id" element={<Main />} />
+            </Route>
+            <Route path="/*" element={<ErrorPage />} />
+          
+          </Routes>
+        </StyledWrapper>
+        <Footer />
+      </Router>
+    </ThemeProvider>
+  );
+}
+
+export default App;
